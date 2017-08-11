@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%-title-%></title>
+    <meta charset="utf-8">
+    <%- include ../template/bootstrap.ejs %>
+  </head>
+  <body style="/*margin:0px;*/">
+    <%- include('navbar.ejs', {sub_title: sub_title, description: description}) %>
+    <hr>
+    <%- include header.ejs %>
+    <%- body %>
+    <%- include footer.ejs %>
+  </body>
+</html>

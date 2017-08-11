@@ -5,7 +5,7 @@
   </head>
   <body>
     <h2>500 エラー！</h2>
-    <p><%=error%></p>
+    <p><%-error.stack.replace(/\r?\n/g, '<br>')%></p>
     <a href="/">goto root page</a>
   </body>
 </html>
