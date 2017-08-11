@@ -6,35 +6,74 @@
     <%- include ../template/bootstrap.ejs %>
   </head>
   <body style="/*margin:0px;*/">
-    <%- include('navbar.ejs', {sub_title: sub_title, description: description}) %>
-    <hr>
-    <%- include header.ejs %>
-    <table border="1">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>証券コード</th>
-          <th>名称</th>
-          <th>市場</th>
-          <th>業種</th>
-        </tr>
-      </thead>
-      <tbody>
-        <%for(var key in stocks){-%>
-          <tr>
-            <td><%=stocks[key].id-%></td>
-            <td><%=stocks[key].code-%></td>
-            <td>
-              <a href="/stock/show_datas?stock_code=<%=stocks[key].code%>">
-                <%=stocks[key].name-%></td>
-              </a>
-            </td>
-            <td><%=stocks[key].market-%></td>
-            <td><%=stocks[key].industry_type-%></td>
-          </tr>
-        <%}-%>
-      </tbody>
-    </table>
-    <%- include footer.ejs %>
+    <div class="container">
+      <%- include('navbar.ejs', {sub_title: sub_title, description: description}) %>
+      <hr>
+      <%- include header.ejs %>
+      <div class="row justify-content-end">
+        <div class="col-6">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search...">
+            <span class="input-group-btn">
+              <button class="btn btn-secondary" type="button">検索</button>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>証券コード</th>
+                <th>名称</th>
+                <th>市場</th>
+                <th>業種</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%for(var key in stocks){-%>
+                <tr scope="row">
+                  <td><%=stocks[key].id-%></td>
+                  <td><%=stocks[key].code-%></td>
+                  <td>
+                    <a href="/stock/show_datas?stock_code=<%=stocks[key].code%>">
+                      <%=stocks[key].name-%></td>
+                    </a>
+                  </td>
+                  <td><%=stocks[key].market-%></td>
+                  <td><%=stocks[key].industry_type-%></td>
+                </tr>
+              <%}-%>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row justify-content-end">
+        <div class="col-4">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <%- include footer.ejs %>
+    </div>
   </body>
 </html>
