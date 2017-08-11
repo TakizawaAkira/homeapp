@@ -1,0 +1,20 @@
+
+<h2>[<%= stock.code %>]&nbsp;<%= stock.name %></h2>
+<h5><%= stock.market %>/<%= stock.industry_type %></h5>
+
+<hr>
+
+<table border="1">
+<tr>
+  <%for(var column_name in columns){ -%>
+    <th><%= columns[column_name] -%></th>
+  <%} -%>
+</tr>
+<%for(var dairy_key in stock_price_datas){ -%>
+  <tr>
+    <%for(var data_key in stock_price_datas[dairy_key]){ -%>
+      <td><%=stock_price_datas[dairy_key][data_key]-%></td>
+    <%} -%>
+  </tr>
+<%} -%>
+</table>

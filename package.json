@@ -1,0 +1,31 @@
+{
+  "name": "homeapp",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "brute_force_global_ip": "node ./scripts/check_global_ips.js",
+    "get_stock_price": "node ./scripts/get_stock_price.js"
+  },
+  "dependencies": {
+    "body-parser": "~1.17.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "ee-first": "^1.1.1",
+    "escape-html": "^1.0.3",
+    "express": "~4.15.2",
+    "forwarded": "^0.1.0",
+    "jade": "~1.11.0",
+    "merge-descriptors": "^1.0.1",
+    "morgan": "~1.8.1",
+    "on-finished": "^2.3.0",
+    "request": "^2.81.0",
+    "serve-favicon": "~2.4.2",
+    "utils-merge": "^1.0.0"
+  },
+  "devDependencies": {
+    "cron": "^1.2.1",
+    "ejs": "^2.5.7",
+    "mysql": "^2.14.0"
+  }
+}

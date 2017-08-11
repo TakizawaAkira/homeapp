@@ -1,0 +1,31 @@
+
+<h2>銘柄リスト</h2>
+
+<hr>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>証券コード</th>
+      <th>名称</th>
+      <th>市場</th>
+      <th>業種</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%for(var key in stocks){-%>
+      <tr>
+        <td><%=stocks[key].id-%></td>
+        <td><%=stocks[key].code-%></td>
+        <td>
+          <a href="/stock_analysis?stock_code=<%=stocks[key].code%>">
+            <%=stocks[key].name-%></td>
+          </a>
+        </td>
+        <td><%=stocks[key].market-%></td>
+        <td><%=stocks[key].industry_type-%></td>
+      </tr>
+    <%}-%>
+  </tbody>
+</table>
