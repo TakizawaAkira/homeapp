@@ -1,42 +1,52 @@
-<h2>[<%= stock.code %>]&nbsp;<%= stock.name %></h2>
-<h5><%= stock.market %>/<%= stock.industry_type %></h5>
-
-<hr>
-<table border="1">
-  <thead>
-    <tr>
-      <th>日時</th>
-      <th>株価</th>
-      <th>前日比</th>
-      <th>前日比(％)</th>
-      <th>前日終値</th>
-      <th>始値</th>
-      <th>高値</th>
-      <th>安値</th>
-      <th>出来高</th>
-      <th>売買代金(千円)</th>
-      <th>時価総額(百万円)</th>
-      <th>値幅下限</th>
-      <th>値幅上限</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%for(var dairy_key in stock_price_datas){ -%>
-      <tr>
-        <td><%=dateformat(stock_price_datas[dairy_key]['datetime'], 'yyyy/mm/dd');-%></td>
-        <td><%=stock_price_datas[dairy_key]['stock_price']-%></td>
-        <td><%=stock_price_datas[dairy_key]['pre']-%></td>
-        <td><%=stock_price_datas[dairy_key]['pre_per']-%></td>
-        <td><%=stock_price_datas[dairy_key]['pre_close_price']-%></td>
-        <td><%=stock_price_datas[dairy_key]['open_price']-%></td>
-        <td><%=stock_price_datas[dairy_key]['high_price']-%></td>
-        <td><%=stock_price_datas[dairy_key]['low_price']-%></td>
-        <td><%=stock_price_datas[dairy_key]['yield']-%></td>
-        <td><%=stock_price_datas[dairy_key]['trading_price']-%></td>
-        <td><%=stock_price_datas[dairy_key]['market_capitalization']-%></td>
-        <td><%=stock_price_datas[dairy_key]['price_low_limit']-%></td>
-        <td><%=stock_price_datas[dairy_key]['price_upper_limit']-%></td>
-      </tr>
-    <%} -%>
-  </tbody>
-</table>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>投資指標データ-<%-title-%></title>
+    <meta charset="utf-8">
+    <%- include ../template/bootstrap.ejs %>
+  </head>
+  <body style="/*margin:0px;*/">
+    <%- include('navbar.ejs', {sub_title: sub_title, description: description}) %>
+    <hr>
+    <%- include header.ejs %>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>日時</th>
+          <th>株価</th>
+          <th>前日比</th>
+          <th>前日比(％)</th>
+          <th>前日終値</th>
+          <th>始値</th>
+          <th>高値</th>
+          <th>安値</th>
+          <th>出来高</th>
+          <th>売買代金(千円)</th>
+          <th>時価総額(百万円)</th>
+          <th>値幅下限</th>
+          <th>値幅上限</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%for(var dairy_key in stock_price_datas){ -%>
+          <tr>
+            <td><%=dateformat(stock_price_datas[dairy_key]['datetime'], 'yyyy/mm/dd');-%></td>
+            <td><%=stock_price_datas[dairy_key]['stock_price']-%></td>
+            <td><%=stock_price_datas[dairy_key]['pre']-%></td>
+            <td><%=stock_price_datas[dairy_key]['pre_per']-%></td>
+            <td><%=stock_price_datas[dairy_key]['pre_close_price']-%></td>
+            <td><%=stock_price_datas[dairy_key]['open_price']-%></td>
+            <td><%=stock_price_datas[dairy_key]['high_price']-%></td>
+            <td><%=stock_price_datas[dairy_key]['low_price']-%></td>
+            <td><%=stock_price_datas[dairy_key]['yield']-%></td>
+            <td><%=stock_price_datas[dairy_key]['trading_price']-%></td>
+            <td><%=stock_price_datas[dairy_key]['market_capitalization']-%></td>
+            <td><%=stock_price_datas[dairy_key]['price_low_limit']-%></td>
+            <td><%=stock_price_datas[dairy_key]['price_upper_limit']-%></td>
+          </tr>
+        <%} -%>
+      </tbody>
+    </table>
+    <%- include footer.ejs %>
+  </body>
+</html>
