@@ -7,3 +7,6 @@ Icon?
 node_modules
 *.log
 *.gz
+
+# APP
+public/japan_all_stock_prices/

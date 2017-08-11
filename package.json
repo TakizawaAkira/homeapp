@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "cron": "^1.2.1",
+    "dateformat": "^2.0.0",
     "ejs": "^2.5.7",
     "mysql": "^2.14.0"
   }
