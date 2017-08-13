@@ -1,5 +1,5 @@
 module.exports = function(params) {
-  for(k in params) this[k]=params[k];
+  for(k in params) this[k]=parseInt(params[k]);
 
   if(page*count>max && !count>max){
     return {error: `現在のページ数または全体の要素数が不正です。`}
@@ -8,10 +8,9 @@ module.exports = function(params) {
     max_page = Math.ceil(max/count);
     prev = page-girth<1;
     next = page+girth>max_page;
-    console.log(`${page}/${girth}`);
+    //console.log(`${page}-+${girth}><1 ${max_page}`);
 
     var start, end;
-    page = parseInt(page);
     if(max_page<(girth*2+1)){
       start = 1;
       end = max_page;
@@ -25,8 +24,8 @@ module.exports = function(params) {
       start = page-girth;
       end = page+girth;
     }
-    console.log(`${prev}/${next}`);
-    console.log(`${start}/${end}/${max_page}`);
+    //console.log(`${prev}/${next}`);
+    //console.log(`${start}/${end}/${max_page}`);
     var nums = [...Array(end-start+1)].map((v,i)=>i+start);
 
     return {next:page+girth==max_page?false:!next, prev:page-girth==1?false:!prev, nums:nums};

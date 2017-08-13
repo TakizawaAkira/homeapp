@@ -8,8 +8,8 @@ router.get('/list', function(req, res, next) {
   var sql = `SELECT count(*) FROM stock;`;
   connection.query(sql, function(err,rows){
     var page_option = {
-      page: req.query.page,
-      limit: req.query.limit,
+      page: typeof req.query.page==="undefined"?1:req.query.page,
+      limit: typeof req.query.limit==="undefined"?100:req.query.limit,
       max: rows[0]['count(*)']
     };
     var pagenation = require("../helpers/pagenation")({
@@ -42,6 +42,15 @@ router.get('/list', function(req, res, next) {
 * 投資指標データ詳細
 */
 router.get('/show_datas', function(req, res, next) {
+  if(typeof req.query.stock_code === "undefined"){
+    res.render('stock/error', {
+      title: "エラーページ",
+      error_message: "開発：URL上に証券コード('stock_code')が存在しません",
+      support_message: "URL上の証券コードを確認の上、下記より再度アクセスしてください"
+    });
+    return;
+  }
+
   var sql = `SELECT * FROM stock WHERE code=${req.query.stock_code} LIMIT 1;`;
   var stock = {};
   var stock_price_datas = [];
