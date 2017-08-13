@@ -10,16 +10,48 @@
       <%- include('navbar.ejs', {sub_title: sub_title, description: description}) %>
       <hr>
       <%- include header.ejs %>
+
       <div class="row justify-content-end">
-        <div class="col-6">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search...">
-            <span class="input-group-btn">
-              <button class="btn btn-secondary" type="button">検索</button>
-            </span>
-          </div>
+        <div class="col-4">
+          <%#ページネーション%>
+          <nav aria-label="...">
+            <ul class="pagination">
+              <%#ページネーション-PREV%>
+              <li class="page-item <%=pagenation.prev?'':'disabled'-%>">
+                <%if(pagenation.prev){-%>
+                  <a class="page-link" href="/stock/list?page=<%=parseInt(page_option.page)-1-%>&limit=100">&laquo;</a>
+                <%}else{-%>
+                  <span class="page-link">&laquo;</span>
+                <%}-%>
+              </li>
+
+              <%#ページネーション-NUMS%>
+              <%for(var key in pagenation.nums){-%>
+                <%if(page_option.page == pagenation.nums[key]){-%>
+                  <li class="page-item active">
+                    <span class="page-link">
+                      <%=pagenation.nums[key]-%>
+                      <span class="sr-only">(current)</span>
+                    </span>
+                  </li>
+                <%}else{-%>
+                  <li class="page-item"><a class="page-link" href="/stock/list?page=<%=pagenation.nums[key]-%>&limit=100"><%=pagenation.nums[key]-%></a></li>
+                <%}-%>
+              <%}-%>
+
+              <%#ページネーション-NEXT%>
+              <li class="page-item <%=pagenation.next?'':'disabled'-%>">
+                <%if(pagenation.next){-%>
+                  <a class="page-link" href="/stock/list?page=<%=parseInt(page_option.page)+1-%>&limit=100">&raquo;</a>
+                <%}else{-%>
+                  <span class="page-link">&raquo;</span>
+                <%}-%>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
+
       <div class="row">
         <div class="col">
           <table class="table table-striped">
@@ -59,7 +91,7 @@
               <%#ページネーション-PREV%>
               <li class="page-item <%=pagenation.prev?'':'disabled'-%>">
                 <%if(pagenation.prev){-%>
-                  <a class="page-link" href="/stock/list?page=<%=parseInt(page_option.page)-1-%>&limit=30">&laquo;</a>
+                  <a class="page-link" href="/stock/list?page=<%=parseInt(page_option.page)-1-%>&limit=100">&laquo;</a>
                 <%}else{-%>
                   <span class="page-link">&laquo;</span>
                 <%}-%>
@@ -75,14 +107,14 @@
                     </span>
                   </li>
                 <%}else{-%>
-                  <li class="page-item"><a class="page-link" href="/stock/list?page=<%=pagenation.nums[key]-%>&limit=30"><%=pagenation.nums[key]-%></a></li>
+                  <li class="page-item"><a class="page-link" href="/stock/list?page=<%=pagenation.nums[key]-%>&limit=100"><%=pagenation.nums[key]-%></a></li>
                 <%}-%>
               <%}-%>
 
               <%#ページネーション-NEXT%>
               <li class="page-item <%=pagenation.next?'':'disabled'-%>">
                 <%if(pagenation.next){-%>
-                  <a class="page-link" href="/stock/list?page=<%=parseInt(page_option.page)+1-%>&limit=30">&raquo;</a>
+                  <a class="page-link" href="/stock/list?page=<%=parseInt(page_option.page)+1-%>&limit=100">&raquo;</a>
                 <%}else{-%>
                   <span class="page-link">&raquo;</span>
                 <%}-%>
