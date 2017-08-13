@@ -5,17 +5,35 @@ var router = express.Router();
 * 銘柄一覧
 */
 router.get('/list', function(req, res, next) {
-  var sql = `SELECT * FROM stock LIMIT 100;`;
-  var stocks = [];
-
+  var sql = `SELECT count(*) FROM stock;`;
   connection.query(sql, function(err,rows){
-    stocks = rows;
+    var page_option = {
+      page: req.query.page,
+      limit: req.query.limit,
+      max: rows[0]['count(*)']
+    };
+    var pagenation = require("../helpers/pagenation")({
+      page: page_option.page,
+      count: page_option.limit,
+      max: page_option.max,
+      girth: 2
+    });
+    console.log(pagenation);
 
-    res.render('stock/index', {
-      title: "銘柄一覧",
-      sub_title: "銘柄一覧",
-      description: "株価データベースの銘柄",
-      stocks: stocks
+    sql = `SELECT * FROM stock LIMIT ${page_option.limit} OFFSET ${(page_option.page-1)*page_option.limit};`;
+    var stocks = [];
+
+    connection.query(sql, function(err,rows){
+      stocks = rows;
+
+      res.render('stock/index', {
+        title: "銘柄一覧",
+        sub_title: "銘柄一覧",
+        description: "株価データベースの銘柄",
+        stocks: stocks,
+        page_option: page_option,
+        pagenation: pagenation
+      });
     });
   });
 });
@@ -49,10 +67,9 @@ router.get('/show_datas', function(req, res, next) {
   }
 
   connection.query(sql, function(err,rows){
-    if(err) throw err;
     stock = rows[0];
 
-    if(stock){
+    if(!err && stock){
       sql = `SELECT * FROM stock_price_data WHERE brand_id=${rows[0].id}`;
 
       connection.query(sql, function(err,rows){
@@ -69,8 +86,20 @@ router.get('/show_datas', function(req, res, next) {
         });
       });
     }else{
-      res.render('error', {code: req.query.stock_code});
+      res.render('stock/error', {
+        title: "エラーページ",
+        error_message: "Sorry, 証券コード('stock_code')が違います。",
+        support_message: "URL上の証券コードを確認の上、下記より再度アクセスしてください"
+      });
     }
+  });
+});
+
+router.get('/error', function(req, res, next) {
+  res.render('stock/error', {
+    title: "エラーページ",
+    error_message: req.query.error_message,
+    support_message: req.query.support_message
   });
 });
 
