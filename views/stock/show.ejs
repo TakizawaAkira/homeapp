@@ -5,6 +5,19 @@
     <meta charset="utf-8">
     <%- include ../template/bootstrap.ejs %>
     <%- include ../template/d3js.ejs %>
+    <style type="text/css">
+    /* d3js linechart css */
+    .line {
+        fill: none;
+        stroke: #ffab00;
+        stroke-width: 3;
+    }
+    .dot {
+        fill: #ffab00;
+        stroke: #fff;
+    }
+    </style>
+    <script id="stock_price_datas" type="application/json"><%-JSON.stringify(stock_price_datas)-%></script>
   </head>
   <body style="/*margin:0px;*/">
     <div class="container">
@@ -18,25 +31,31 @@
           </nav>
         </div>
       </div>
+
       <div class="row">
         <div class="col">
+          <!--終値可視化-->
           <div class="view_stock_prices"></div>
-          <style type="text/css">
-          /* d3js linechart css */
-          .line {
-              fill: none;
-              stroke: #ffab00;
-              stroke-width: 3;
-          }
-          .dot {
-              fill: #ffab00;
-              stroke: #fff;
-          }
-          </style>
-          <script id="stock_price_datas" type="application/json"><%-JSON.stringify(stock_price_datas)-%></script>
           <script src="/javascripts/stock/final_prices_chart.js"></script>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col">
+          <nav class="navbar navbar-light bg-faded">
+            <h1 class="navbar-brand mb-0">解析データ</h1>
+          </nav>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <!--解析結果可視化-->
+          <div class="view_stock_prices_zero"></div>
+          <script src="/javascripts/stock/final_prices_zero_chart.js"></script>
+        </div>
+      </div>
+
       <div class="row">
         <div class="col">
           <nav class="navbar navbar-light bg-faded">
@@ -44,6 +63,7 @@
           </nav>
         </div>
       </div>
+
       <div class="row">
           <table class="table table-striped">
             <thead>

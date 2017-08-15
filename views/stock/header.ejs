@@ -20,11 +20,12 @@
 // 一旦投資指標詳細へリダイレクトできるようにする
 // TODO: 検索を証券コード(#8750)と名称で検索できるようにする予定
 $("#search_btn").click(function(){
-  var text = $("#search_text").val();
-  if(!isNaN(text)){
+  var text = $("#search_text").val().replace(/\s+/g, "");
+  if(!isNaN(text) && text!=''){
     location.href = `/stock/show_datas?stock_code=${text}`;
   }else{
     alert("※半角数字で証券コードを入力");
   }
+  $("#search_text").val("");
 });
 </script>
