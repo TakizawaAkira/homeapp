@@ -18,7 +18,6 @@ router.get('/list', function(req, res, next) {
       max: page_option.max,
       girth: 2
     });
-    console.log(pagenation);
 
     sql = `SELECT * FROM stock LIMIT ${page_option.limit} OFFSET ${(page_option.page-1)*page_option.limit};`;
     var stocks = [];
