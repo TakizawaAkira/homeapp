@@ -8,7 +8,7 @@
 var stock_price_datas = JSON.parse( document.getElementById("stock_price_datas").innerText);
 var max_value = 0;
 var min_value = 999999999999;
-var final_prices = stock_price_datas.map(arr=>{
+var final_prices = stock_price_datas.map(function(arr){
   if(max_value<arr['pre_close_price']) max_value=arr['pre_close_price'];
   if(min_value>arr['pre_close_price']) min_value=arr['pre_close_price'];
   return {'y': arr['pre_close_price']};

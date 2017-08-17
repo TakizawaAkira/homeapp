@@ -4,8 +4,8 @@
 */
 
 // 計算類
-var final_prices_zero = stock_price_datas.map(arr=>arr['pre_close_price']);
-var getCenter = (a,b) => (a+b)/2;
+var final_prices_zero = stock_price_datas.map(function(arr){return arr['pre_close_price']});
+var getCenter = function(a,b){return (a+b)/2;};
 var fpz=final_prices_zero, pInt=parseInt, fluctua_sum=0;
 for(var i=0;i<fpz.length-2;i++){
   fluctua_sum += pInt(fpz[i+1])-getCenter(pInt(fpz[i+0]), pInt(fpz[i+2]));
@@ -24,7 +24,7 @@ for(var i=0;i<fpz.length-2;i++){
   var centerC = getCenter(price0, price2);
 
   var fluctua = price1-centerC;
-  if(Math.abs(fluctua) < fluctua_sum/3 || parseInt(fluctua)==0){
+  if(Math.abs(fluctua) < fluctua_sum/4 || parseInt(fluctua)==0){
     judge.push(0); //zero
   }else if(fluctua>0){
     judge.push(+1); //+
@@ -61,6 +61,7 @@ enter.append("rect")
   .attr("y", function(d, i){return size.h+(d*size.h)})
   .attr("width", size.h)
   .attr("height", size.h)
+  .style("stroke", function(b, i){return b==0?'red':'black'})
   .append('text')
   .style("stroke", "white")
   .text(function(d,i){return i});
