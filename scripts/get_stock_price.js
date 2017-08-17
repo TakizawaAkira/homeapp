@@ -4,7 +4,7 @@ var exec = require('child_process').exec;
 
 // 今日の日付を取得
 var date_now = new Date();
-date_now.setDate(date_now.getDate() - 1);
+//date_now.setDate(date_now.getDate() - 1);
 var now = {year: date_now.getFullYear(), month: date_now.getMonth()+1, date: date_now.getDate()};
 
 // 日付当日のファイルが存在するか?
@@ -15,7 +15,7 @@ console.log(request_url);
 
 request( {method: 'GET', url: request_url, encoding: null},
     function (error, response, body){
-        console.log("前日の株データを取得["+request_url+"]");
+        console.log("投資指標データを取得["+request_url+"]");
 
         if(!error && response.statusCode === 200){
             fs.writeFileSync(__dirname+'/../public/japan_all_stock_prices/'+file_name, body, 'binary');

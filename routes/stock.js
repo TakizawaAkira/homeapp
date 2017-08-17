@@ -26,7 +26,7 @@ router.get('/list', function(req, res, next) {
       stocks = rows;
 
       res.render('stock/index', {
-        title: "銘柄一覧",
+        title: "投資指標データ解析",
         sub_title: "銘柄一覧",
         description: "株価データベースの銘柄",
         stocks: stocks,
@@ -84,7 +84,7 @@ router.get('/show_datas', function(req, res, next) {
         stock_price_datas = rows;
 
         res.render('stock/show', {
-          title: "投資指標詳細",
+          title: "投資指標データ解析",
           sub_title: `[${stock.code}]&nbsp;${stock.name}`,
           description: "投資指標の各種詳細データ",
           code: req.query.stock_code,
