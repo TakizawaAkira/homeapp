@@ -1,24 +1,31 @@
 # homeapp
 
-## データベース初期化
-* DB初期化
-```
-node reset_database.js
-```
-* バックアップデータ導入
 
-* 不足ファイルダウンロード
+## 環境コマンド
+> PM2を導入しているためcronや起動停止は下記で行う
 
-## 投資指標データcron
+#### サーバー起動/停止
+```
+pm2 start app # 起動
+pm2 stop app # 停止
+```
+#### 投資指標データcron
 * 投資指標取得ファイルのcron起動
-
-## 起動/停止
-* PM2を導入しているため下記で起動
 ```
-pm2 start app.json
+pm2 start cron/get_stock_data.js # 起動
+pm2 stop cron/get_stock_data.js # 停止
 ```
-* 停止
+#### データベース初期化
 ```
-pm2 list
-pm2 stop app
+# データのバックアップ
+node reset_database.js # DB初期化
+# バックアップデータ導入
+# 不足ファイルダウンロード
+```
+#### その他
+```
+# 全ファイルの投資指標データの取り込み
+node script/save_stock_prices_all.js
+# 投資指標データの取り込み
+node script/save_stock_prices_day.js ファイル名
 ```
