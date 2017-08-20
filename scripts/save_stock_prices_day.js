@@ -19,7 +19,6 @@ con.connect(function(err) {
     save_stock(stock_price_datas[i]);
   }
 
-
   // Stockデータの追加
   function save_stock(stock_price_data){
     var stock = {};
@@ -32,7 +31,7 @@ con.connect(function(err) {
     stock['column_name_comma'] = Object.keys(stock['column_name_list_i18n']).join(',');
     stock['dates_comma'] = '"'+stock_price_data.slice(0,4).join('","')+'"';
 
-    con.query(`INSERT INTO stock(${stock['column_name_comma']}) VALUE(${stock['dates_comma']});`, function(err, result){
+    con.query({sql:`INSERT INTO stock(${stock['column_name_comma']}) VALUE(${stock['dates_comma']});`, timeout:10000}, function(err, result){
       if (err){
         con.query(`SELECT id FROM stock WHERE code=${stock_price_data[0]};`, function(err, result){
           save_stock_price(result[0].id, stock_price_data);
@@ -64,7 +63,7 @@ con.connect(function(err) {
     stock_price['column_name_comma'] = Object.keys(stock_price['column_name_list_i18n']).join(',');
     stock_price['dates_comma'] = ('"'+stock_price_data.slice(4).join('","')+'"').replace( /"-"/g , 'null' ); //一旦文字列から"-"をnullにする
 
-    con.query(`INSERT INTO stock_price_data(brand_id,${stock_price['column_name_comma']}) VALUE("${parent_id}",${stock_price['dates_comma']});`, function(err, result){
+    con.query({sql:`INSERT INTO stock_price_data(brand_id,${stock_price['column_name_comma']}) VALUE("${parent_id}",${stock_price['dates_comma']});`, timeout:10000}, function(err, result){
       if(err){
         console.log(`※追加済み株式投資指標データ: ${filepath}`);
         console.log(err.sql);
