@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var dateformat = require('dateformat');
 global.dateformat = dateformat;
+var global_helper = require('./helpers/global_helper');
+global.gh = global_helper;
 
 var index = require('./routes/index');
 var stock = require('./routes/stock');

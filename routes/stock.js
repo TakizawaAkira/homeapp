@@ -31,7 +31,8 @@ router.get('/list', function(req, res, next) {
         description: "株価データベースの銘柄",
         stocks: stocks,
         page_option: page_option,
-        pagenation: pagenation
+        pagenation: pagenation,
+        device_type: gh.userAgentType(req)
       });
     });
   });
@@ -90,7 +91,8 @@ router.get('/show_datas', function(req, res, next) {
           code: req.query.stock_code,
           stock: stock,
           stock_price_datas: stock_price_datas,
-          columns: columns
+          columns: columns,
+          device_type: gh.userAgentType(req)
         });
       });
     }else{

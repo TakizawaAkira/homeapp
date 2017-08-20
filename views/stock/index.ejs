@@ -3,126 +3,23 @@
   <head>
     <title>投資指標データ-<%-title-%></title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <%- include ../template/bootstrap.ejs %>
+    <%- include ../template/material_icons.ejs %>
   </head>
   <body>
-    <div class="container">
+    <div class="container-fluid">
       <%- include('navbar.ejs', {sub_title: sub_title, description: description}) %>
       <hr>
       <%- include header.ejs %>
 
-      <div class="row justify-content-end">
-        <div class="col-4">
-          <%#ページネーション%>
-          <nav aria-label="...">
-            <ul class="pagination">
-              <%#ページネーション-PREV%>
-              <li class="page-item <%=pagenation.prev?'':'disabled'-%>">
-                <%if(pagenation.prev){-%>
-                  <a class="page-link" href="/stock/list?page=<%=parseInt(page_option.page)-1-%>&limit=100">&laquo;</a>
-                <%}else{-%>
-                  <span class="page-link">&laquo;</span>
-                <%}-%>
-              </li>
-
-              <%#ページネーション-NUMS%>
-              <%for(var key in pagenation.nums){-%>
-                <%if(page_option.page == pagenation.nums[key]){-%>
-                  <li class="page-item active">
-                    <span class="page-link">
-                      <%=pagenation.nums[key]-%>
-                      <span class="sr-only">(current)</span>
-                    </span>
-                  </li>
-                <%}else{-%>
-                  <li class="page-item"><a class="page-link" href="/stock/list?page=<%=pagenation.nums[key]-%>&limit=100"><%=pagenation.nums[key]-%></a></li>
-                <%}-%>
-              <%}-%>
-
-              <%#ページネーション-NEXT%>
-              <li class="page-item <%=pagenation.next?'':'disabled'-%>">
-                <%if(pagenation.next){-%>
-                  <a class="page-link" href="/stock/list?page=<%=parseInt(page_option.page)+1-%>&limit=100">&raquo;</a>
-                <%}else{-%>
-                  <span class="page-link">&raquo;</span>
-                <%}-%>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>証券コード</th>
-                <th>名称</th>
-                <th>市場</th>
-                <th>業種</th>
-              </tr>
-            </thead>
-            <tbody>
-              <%for(var key in stocks){-%>
-                <tr scope="row">
-                  <td><%=stocks[key].id-%></td>
-                  <td><%=stocks[key].code-%></td>
-                  <td>
-                    <a href="/stock/show_datas?stock_code=<%=stocks[key].code%>">
-                      <%=stocks[key].name-%></td>
-                    </a>
-                  </td>
-                  <td><%=stocks[key].market-%></td>
-                  <td><%=stocks[key].industry_type-%></td>
-                </tr>
-              <%}-%>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="row justify-content-end">
-        <div class="col-4">
-          <%#ページネーション%>
-          <nav aria-label="...">
-            <ul class="pagination">
-              <%#ページネーション-PREV%>
-              <li class="page-item <%=pagenation.prev?'':'disabled'-%>">
-                <%if(pagenation.prev){-%>
-                  <a class="page-link" href="/stock/list?page=<%=parseInt(page_option.page)-1-%>&limit=100">&laquo;</a>
-                <%}else{-%>
-                  <span class="page-link">&laquo;</span>
-                <%}-%>
-              </li>
-
-              <%#ページネーション-NUMS%>
-              <%for(var key in pagenation.nums){-%>
-                <%if(page_option.page == pagenation.nums[key]){-%>
-                  <li class="page-item active">
-                    <span class="page-link">
-                      <%=pagenation.nums[key]-%>
-                      <span class="sr-only">(current)</span>
-                    </span>
-                  </li>
-                <%}else{-%>
-                  <li class="page-item"><a class="page-link" href="/stock/list?page=<%=pagenation.nums[key]-%>&limit=100"><%=pagenation.nums[key]-%></a></li>
-                <%}-%>
-              <%}-%>
-
-              <%#ページネーション-NEXT%>
-              <li class="page-item <%=pagenation.next?'':'disabled'-%>">
-                <%if(pagenation.next){-%>
-                  <a class="page-link" href="/stock/list?page=<%=parseInt(page_option.page)+1-%>&limit=100">&raquo;</a>
-                <%}else{-%>
-                  <span class="page-link">&raquo;</span>
-                <%}-%>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
+      <%- include template/stock_list_pagenation.ejs %>
+      <%if(device_type=='pc'){-%>
+        <%- include template/pc_stock_list.ejs %>
+      <%}else if(device_type=='sp'){-%>
+        <%- include template/sp_stock_list.ejs %>
+      <%}-%>
+      <%- include template/stock_list_pagenation.ejs %>
 
       <%- include footer.ejs %>
     </div>
