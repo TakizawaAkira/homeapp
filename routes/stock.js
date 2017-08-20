@@ -75,7 +75,7 @@ router.get('/show_datas', function(req, res, next) {
     stock = rows[0];
 
     if(!err && stock){
-      sql = `SELECT * FROM stock_price_data WHERE brand_id=${rows[0].id}`;
+      sql = `SELECT * FROM stock_price_data WHERE brand_id=${rows[0].id} ORDER BY datetime`;
 
       connection.query(sql, function(err,rows){
         stock_price_datas = rows;
@@ -88,7 +88,8 @@ router.get('/show_datas', function(req, res, next) {
           stock: stock,
           stock_price_datas: stock_price_datas,
           columns: columns,
-          device_type: gh.userAgentType(req)
+          device_type: gh.userAgentType(req),
+          last_stock_price_data: stock_price_datas.slice(-1)[0]
         });
       });
     }else{

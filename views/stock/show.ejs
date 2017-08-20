@@ -3,8 +3,10 @@
   <head>
     <title>投資指標データ-<%-title-%>-<%-sub_title-%></title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <%- include ../template/bootstrap.ejs %>
     <%- include ../template/d3js.ejs %>
+    <%- include ../template/material_icons.ejs %>
     <style type="text/css">
     /* d3js linechart css */
     .line {
@@ -16,27 +18,44 @@
         fill: #ffab00;
         stroke: #fff;
     }
+
+    .row{
+      padding: 10px 10px;
+    }
     </style>
     <script id="stock_price_datas" type="application/json"><%-JSON.stringify(stock_price_datas)-%></script>
   </head>
-  <body style="/*margin:0px;*/">
-    <div class="container">
+  <body>
+    <div class="container-fluid">
       <%- include('navbar.ejs', {sub_title: sub_title, description: description}) %>
+
       <hr>
       <%- include header.ejs %>
+
       <div class="row">
-        <div class="col">
-          <nav class="navbar navbar-light bg-faded">
-            <h1 class="navbar-brand mb-0">終値グラフ</h1>
-          </nav>
+        <div class="col-md-10 offset-md-1">
+          <!--終値可視化-->
+          <div class="view_stock_prices"></div>
+          <script src="/javascripts/stock/final_prices_chart.js"></script>
         </div>
       </div>
 
       <div class="row">
-        <div class="col">
-          <!--終値可視化-->
-          <div class="view_stock_prices"></div>
-          <script src="/javascripts/stock/final_prices_chart.js"></script>
+        <div class="col-md-6 offset-md-3">
+          <table class="table table-striped">
+            <tbody>
+              <tr><td>取引値</td><td> <%=last_stock_price_data['stock_price']-%></td></tr>
+              <tr><td>前日比(％)</td><td style="color: <%=last_stock_price_data['pre']<0?'red':'green'%>"> <%=last_stock_price_data['pre']-%>(<%=last_stock_price_data['pre_per']-%>)</td></tr>
+              <tr><td>前日終値</td><td> <%=last_stock_price_data['pre_close_price']-%></td></tr>
+              <tr><td>始値</td><td> <%=last_stock_price_data['open_price']-%></td></tr>
+              <tr><td>高値</td><td> <%=last_stock_price_data['high_price']-%></td></tr>
+              <tr><td>安値</td><td> <%=last_stock_price_data['low_price']-%></td></tr>
+              <tr><td>出来高</td><td> <%=last_stock_price_data['yield']-%></td></tr>
+              <tr><td>売買代金</td><td> <%=last_stock_price_data['trading_price']-%>千円</td></tr>
+              <tr><td>時価総額</td><td> <%=last_stock_price_data['market_capitalization']-%>百万円</td></tr>
+              <tr><td>値幅制限</td><td> <%=last_stock_price_data['price_low_limit']-%>~<%=last_stock_price_data['price_upper_limit']-%></td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -65,7 +84,8 @@
       </div>
 
       <div class="row">
-          <table class="table table-striped">
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed">
             <thead>
               <tr>
                 <th>日時</th>
@@ -103,6 +123,7 @@
               <%} -%>
             </tbody>
           </table>
+        </div>
       </div>
       <%- include footer.ejs %>
   </div>
