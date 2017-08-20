@@ -7,20 +7,15 @@ var router = express.Router();
 router.get('/list', function(req, res, next) {
   var sql = `SELECT count(*) FROM stock;`;
   connection.query(sql, function(err,rows){
-    var page_option = {
-      page: typeof req.query.page==="undefined"?1:req.query.page,
-      limit: typeof req.query.limit==="undefined"?100:req.query.limit,
-      max: rows[0]['count(*)']
-    };
-    var pagenation = require("../helpers/pagenation")({
-      page: page_option.page,
-      count: page_option.limit,
-      max: page_option.max,
-      girth: 2
+    var pagenation = gh.getPagenationNum({
+      max: rows[0]['count(*)'],
+      count: req.query.limit,
+      page: req.query.page, girth: 2
     });
 
-    sql = `SELECT * FROM stock LIMIT ${page_option.limit} OFFSET ${(page_option.page-1)*page_option.limit};`;
+    sql = `SELECT * FROM stock LIMIT ${pagenation.page_option.count} OFFSET ${(pagenation.page_option.page-1)*pagenation.page_option.count};`;
     var stocks = [];
+    var list_length = rows[0]['count(*)'];
 
     connection.query(sql, function(err,rows){
       stocks = rows;
@@ -30,13 +25,14 @@ router.get('/list', function(req, res, next) {
         sub_title: "銘柄一覧",
         description: "株価データベースの銘柄",
         stocks: stocks,
-        page_option: page_option,
+        page_option: pagenation.page_option,
         pagenation: pagenation,
         device_type: gh.userAgentType(req)
       });
     });
   });
 });
+
 
 /*
 * 投資指標データ詳細
@@ -104,6 +100,8 @@ router.get('/show_datas', function(req, res, next) {
     }
   });
 });
+
+
 
 router.get('/error', function(req, res, next) {
   res.render('stock/error', {

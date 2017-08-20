@@ -9,8 +9,8 @@
 pm2 start app # 起動
 pm2 stop app # 停止
 ```
-#### ・投資指標データcron
-投資指標取得ファイルのcron起動
+#### ・投資指標取得ファイルのcron起動
+
 ```
 pm2 start cron/get_stock_data.js # 起動
 pm2 stop cron/get_stock_data.js # 停止
