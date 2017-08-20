@@ -12,7 +12,7 @@ ol, ul, dl {
         <%#ページネーション-PREV%>
         <li class="page-item <%=pagenation.prev?'':'disabled'-%>" style="width: 100%;">
           <%if(pagenation.prev){-%>
-            <a class="page-link" href="/stock/list?page=<%=parseInt(page_option.page)-3-%>&limit=100">&laquo;</a>
+            <a class="page-link" href="/stock/list?page=<%=parseInt(page_option.page)-3-%>&limit=<%=page_option.default_count-%>">&laquo;</a>
           <%}else{-%>
             <span class="page-link">&laquo;</span>
           <%}-%>
@@ -28,14 +28,14 @@ ol, ul, dl {
               </span>
             </li>
           <%}else{-%>
-            <li class="page-item" style="width: 100%;"><a class="page-link" href="/stock/list?page=<%=pagenation.nums[key]-%>&limit=100"><%=pagenation.nums[key]-%></a></li>
+            <li class="page-item" style="width: 100%;"><a class="page-link" href="/stock/list?page=<%=pagenation.nums[key]-%>&limit=<%=page_option.default_count-%>"><%=pagenation.nums[key]-%></a></li>
           <%}-%>
         <%}-%>
 
         <%#ページネーション-NEXT%>
         <li class="page-item <%=pagenation.next?'':'disabled'-%>" style="width: 100%;">
           <%if(pagenation.next){-%>
-            <a class="page-link" href="/stock/list?page=<%=parseInt(page_option.page)+3-%>&limit=100">&raquo;</a>
+            <a class="page-link" href="/stock/list?page=<%=parseInt(page_option.page)+3-%>&limit=<%=page_option.default_count-%>">&raquo;</a>
           <%}else{-%>
             <span class="page-link">&raquo;</span>
           <%}-%>

@@ -21,10 +21,11 @@ module.exports = {
   * 簡易的なページネーション配列を取得
   */
   getPagenationNum: function(params){
-    var max, page, count;
+    var max, page, count, default_count;
+    default_count = typeof params['default_count']==="undefined"?100:parseInt(params['default_count']);
     max = parseInt(params['max']);
     page = typeof params['page']==="undefined"?1:parseInt(params['page']);
-    count = typeof params['count']==="undefined"?100:parseInt(params['count']);
+    count = typeof params['count']==="undefined"?default_count:parseInt(params['count']);
     girth = parseInt(params['girth']);
 
     if(page*count>max && !count>max){
@@ -53,7 +54,7 @@ module.exports = {
       //console.log(`${start}/${end}/${max_page}`);
       var nums = [...Array(end-start+1)].map((v,i)=>i+start);
 
-      return {next:page+girth==max_page?false:!next, prev:page-girth==1?false:!prev, nums:nums, page_option: {max:max,page:page,count:count}};
+      return {next:page+girth==max_page?false:!next, prev:page-girth==1?false:!prev, nums:nums, page_option: {max:max,page:page,count:count,default_count:default_count}};
     }
   }
 }

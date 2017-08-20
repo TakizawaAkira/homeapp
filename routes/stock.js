@@ -5,12 +5,16 @@ var router = express.Router();
 * 銘柄一覧
 */
 router.get('/list', function(req, res, next) {
+  var device_type = gh.userAgentType(req);
+
   var sql = `SELECT count(*) FROM stock;`;
   connection.query(sql, function(err,rows){
     var pagenation = gh.getPagenationNum({
       max: rows[0]['count(*)'],
       count: req.query.limit,
-      page: req.query.page, girth: 2
+      page: req.query.page,
+      girth: 2,
+      default_count: device_type=='sp'?30:100
     });
 
     sql = `SELECT * FROM stock LIMIT ${pagenation.page_option.count} OFFSET ${(pagenation.page_option.page-1)*pagenation.page_option.count};`;
@@ -27,7 +31,7 @@ router.get('/list', function(req, res, next) {
         stocks: stocks,
         page_option: pagenation.page_option,
         pagenation: pagenation,
-        device_type: gh.userAgentType(req)
+        device_type: device_type
       });
     });
   });
