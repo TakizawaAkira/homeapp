@@ -7,6 +7,10 @@ var router = express.Router();
 router.get('/list', function(req, res, next) {
   var device_type = gh.userAgentType(req);
 
+  var stock_history = req.cookies.stock_history;
+  if(stock_history==undefined) stock_history=[];
+  console.log(stock_history);
+
   var sql = `SELECT count(*) FROM stock;`;
   connection.query(sql, function(err,rows){
     var pagenation = gh.getPagenationNum({
@@ -42,6 +46,13 @@ router.get('/list', function(req, res, next) {
 * 投資指標データ詳細
 */
 router.get('/show_datas', function(req, res, next) {
+  var stock_history = req.cookies.stock_history;
+  if(stock_history==undefined){
+    stock_history = [];
+  }else{
+    stock_history = stock_history.split(",");
+  }
+
   if(typeof req.query.stock_code === "undefined"){
     res.render('stock/error', {
       title: "エラーページ",
@@ -77,6 +88,12 @@ router.get('/show_datas', function(req, res, next) {
 
   connection.query(sql, function(err,rows){
     stock = rows[0];
+
+    stock_history.push(parseInt(req.query.stock_code));
+    if(stock_history!=undefined && stock_history.length>30){
+      stock_history = stock_history.slice(stock_history.length-30);
+    }
+    res.cookie('stock_history', stock_history.join(','), {maxAge:60*60*60*24*3, httpOnly:false});
 
     if(!err && stock){
       sql = `SELECT * FROM stock_price_data WHERE brand_id=${rows[0].id} ORDER BY datetime`;
