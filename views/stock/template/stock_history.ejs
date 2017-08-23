@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <table class="table table-striped" style="background-color:#0F52BC;color:#FFF;">
+      <thead>
+        <tr>
+          <th>最近見た銘柄</th>
+          <th>SC</th>
+          <th>閲覧日時</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%for(var key in stock_historys){-%>
+          <tr scope="row">
+            <td>
+              <a href="/stock/show_datas?stock_code=<%=stock_historys[key].code%>" style="color:inherit;">
+                <%=stock_historys[key].name-%></td>
+              </a>
+            </td>
+            <td><%=stock_historys[key].code-%></td>
+            <td><%=stock_historys[key].view_datetime-%></td>
+          </tr>
+        <%}-%>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 
 /*
-* 汎用的なヘルパーメソッドを記載する
+* 汎用的なヘルパーメソッドを記述する
 *
 */
 module.exports = {
@@ -56,5 +56,41 @@ module.exports = {
 
       return {next:page+girth==max_page?false:!next, prev:page-girth==1?false:!prev, nums:nums, page_option: {max:max,page:page,count:count,default_count:default_count}};
     }
+  },
+
+  /*
+  *
+  *
+  *
+  */
+
+  /**
+  *連想配列を下記のフォーマットに変換する
+  *[
+  *  {key: “a”, value: “abc”},
+  *  {key: “b”, value: “def”},
+  *  {key: “c”, value: “ghi”}
+  *]
+  */
+  array_associative_format: function(obj, name){
+    var arr=[], key_name="key", value_name="value";
+    if( name!=undefined ){
+      key_name = name['key'];
+      value_name = name['value'];
+    }
+    for(var key in obj) arr.push({[key_name]: key, [value_name]: obj[key]});
+    return arr;
+  },
+  /**
+  *フォーマットした連想配列を元に戻す
+  */
+  array_associative_unformat: function(arr, name){
+    var obj={}, key_name="key", value_name="value";
+    if( name!=undefined ){
+      key_name = name['key'];
+      value_name = name['value'];
+    }
+    for(var i=0;i<arr.length;i++) obj[arr[i][key_name]]=arr[i][value_name];
+    return obj;
   }
 }

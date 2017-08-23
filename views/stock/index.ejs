@@ -6,12 +6,19 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%- include ../template/bootstrap.ejs %>
     <%- include ../template/material_icons.ejs %>
+    <style>
+    .row{
+      padding: 10px 0px 10px;
+    }
+    </style>
   </head>
   <body>
     <div class="container-fluid">
       <%- include('navbar.ejs', {sub_title: sub_title, description: description}) %>
       <hr>
       <%- include header.ejs %>
+
+      <%- include template/stock_history.ejs%>
 
       <%- include template/stock_list_pagenation.ejs %>
       <%if(device_type=='pc'){-%>

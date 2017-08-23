@@ -7,14 +7,38 @@ var router = express.Router();
 router.get('/list', function(req, res, next) {
   var device_type = gh.userAgentType(req);
 
-  var stock_history = req.cookies.stock_history;
-  if(stock_history==undefined) stock_history=[];
-  console.log(stock_history);
+  var stock_history = sh.get_stock_history(req.cookies.stock_history);
+  if(stock_history.length>5)stock_history = stock_history.slice(stock_history.length-5);
+  var stock_history_codes=[], stock_history_datas=[];
+  for(key in stock_history) stock_history_codes.push(stock_history[key]['code']);
 
-  var sql = `SELECT count(*) FROM stock;`;
-  connection.query(sql, function(err,rows){
+
+  var p = Promise.resolve('start');
+  p.then(val=>{return new Promise((resolve,reject)=>{
+    // 投資指標詳細の履歴一覧取得
+    var sql = `SELECT * FROM stock WHERE code IN(${'"'+stock_history_codes.join('","')+'"'}) ORDER BY FIELD(code,${'"'+stock_history_codes.join('","')+'"'});`;
+    connection.query(sql, function(err,rows){
+      var associative_stock = gh.array_associative_unformat(stock_history, {key:"code",value:"date"});
+      for(var key in rows){
+        stock_history_datas.push({
+          code: rows[key].code,
+          name: rows[key].name,
+          view_datetime: associative_stock[rows[key].code]
+        });
+      }
+      resolve(val);
+    });
+  });}).then(val=>{return new Promise((resolve,reject)=>{
+    // 全銘柄の数取得
+    var stock_count=0;
+    var sql = `SELECT count(*) FROM stock;`;
+    connection.query(sql, function(err,rows){
+      resolve(rows[0]['count(*)']);
+    });
+  });}).then(stock_count=>{return new Promise((resolve,reject)=>{
+    // 銘柄一覧取得
     var pagenation = gh.getPagenationNum({
-      max: rows[0]['count(*)'],
+      max: stock_count,
       count: req.query.limit,
       page: req.query.page,
       girth: 2,
@@ -22,23 +46,50 @@ router.get('/list', function(req, res, next) {
     });
 
     sql = `SELECT * FROM stock LIMIT ${pagenation.page_option.count} OFFSET ${(pagenation.page_option.page-1)*pagenation.page_option.count};`;
-    var stocks = [];
-    var list_length = rows[0]['count(*)'];
-
     connection.query(sql, function(err,rows){
-      stocks = rows;
-
       res.render('stock/index', {
         title: "投資指標データ解析",
         sub_title: "銘柄一覧",
         description: "株価データベースの銘柄",
-        stocks: stocks,
+        stocks: rows,
         page_option: pagenation.page_option,
         pagenation: pagenation,
-        device_type: device_type
+        device_type: device_type,
+        stock_historys: stock_history_datas
       });
     });
-  });
+  });});
+
+
+
+  // var sql = `SELECT count(*) FROM stock;`;
+  // connection.query(sql, function(err,rows){
+  //   var pagenation = gh.getPagenationNum({
+  //     max: rows[0]['count(*)'],
+  //     count: req.query.limit,
+  //     page: req.query.page,
+  //     girth: 2,
+  //     default_count: device_type=='sp'?30:100
+  //   });
+  //
+  //   sql = `SELECT * FROM stock LIMIT ${pagenation.page_option.count} OFFSET ${(pagenation.page_option.page-1)*pagenation.page_option.count};`;
+  //   var stocks = [];
+  //   var list_length = rows[0]['count(*)'];
+  //
+  //   connection.query(sql, function(err,rows){
+  //     stocks = rows;
+  //
+  //     res.render('stock/index', {
+  //       title: "投資指標データ解析",
+  //       sub_title: "銘柄一覧",
+  //       description: "株価データベースの銘柄",
+  //       stocks: stocks,
+  //       page_option: pagenation.page_option,
+  //       pagenation: pagenation,
+  //       device_type: device_type
+  //     });
+  //   });
+  // });
 });
 
 
@@ -46,22 +97,6 @@ router.get('/list', function(req, res, next) {
 * 投資指標データ詳細
 */
 router.get('/show_datas', function(req, res, next) {
-  var stock_history = req.cookies.stock_history;
-  if(stock_history==undefined){
-    stock_history = [];
-  }else{
-    stock_history = stock_history.split(",");
-  }
-
-  if(typeof req.query.stock_code === "undefined"){
-    res.render('stock/error', {
-      title: "エラーページ",
-      error_message: "開発：URL上に証券コード('stock_code')が存在しません",
-      support_message: "URL上の証券コードを確認の上、下記より再度アクセスしてください"
-    });
-    return;
-  }
-
   var sql = `SELECT * FROM stock WHERE code=${req.query.stock_code} LIMIT 1;`;
   var stock = {};
   var stock_price_datas = [];
@@ -89,13 +124,11 @@ router.get('/show_datas', function(req, res, next) {
   connection.query(sql, function(err,rows){
     stock = rows[0];
 
-    stock_history.push(parseInt(req.query.stock_code));
-    if(stock_history!=undefined && stock_history.length>30){
-      stock_history = stock_history.slice(stock_history.length-30);
-    }
-    res.cookie('stock_history', stock_history.join(','), {maxAge:60*60*60*24*3, httpOnly:false});
-
     if(!err && stock){
+      //詳細閲覧履歴に追加
+      stock_history = sh.add_stock_history(req.cookies.stock_history, rows[0].code);
+      res.cookie('stock_history', stock_history, {maxAge:60*60*60*24*3, httpOnly:false});
+
       sql = `SELECT * FROM stock_price_data WHERE brand_id=${rows[0].id} ORDER BY datetime`;
 
       connection.query(sql, function(err,rows){

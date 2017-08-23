@@ -9,6 +9,8 @@ var dateformat = require('dateformat');
 global.dateformat = dateformat;
 var global_helper = require('./helpers/global_helper');
 global.gh = global_helper;
+var stock_helper = require('./helpers/stock_helper');
+global.sh = stock_helper;
 
 var index = require('./routes/index');
 var stock = require('./routes/stock');
