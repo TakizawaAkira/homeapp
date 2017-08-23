@@ -136,7 +136,7 @@ router.get('/show_datas', function(req, res, next) {
 
         res.render('stock/show', {
           title: "投資指標データ解析",
-          sub_title: `[${stock.code}]&nbsp;${stock.name}`,
+          sub_title: `${stock.name}&nbsp;<span class="badge badge-success">${stock.code}</span>`,
           description: "投資指標の各種詳細データ",
           code: req.query.stock_code,
           stock: stock,
