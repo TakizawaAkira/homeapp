@@ -8,11 +8,13 @@
           <div class="row">
             <div class="col-10">
                 <div class="card-block">
-                  <h5 class="card-title"> <%=stocks[key].name-%><span class="badge badge-default" style="background-color:#A5A5A5;">&nbsp;<%=stocks[key].code-%></span> </h5>
+                  <h5 class="card-title">
+                    <%=stocks[key].name-%><span class="badge badge-default" style="background-color:#A5A5A5;">&nbsp;<%=stocks[key].code-%></span>
+                    <span class="badge badge-<%=parseInt(stocks[key].pre)<0?'danger':'success'%>">
+                      <%=stocks[key].pre-%>(<%=stocks[key].pre_per-%>)
+                    </span>
+                  </h5>
                   <p class="card-text"> <%=stocks[key].market-%> / <%=stocks[key].industry_type-%> </p>
-                  <span class="badge badge-<%=parseInt(stocks[key].pre)<0?'danger':'success'%>">
-                    <%=stocks[key].pre-%>(<%=stocks[key].pre_per-%>)
-                  </span>
                 </div>
             </div>
             <div class="col-2"　style="position: relative;">

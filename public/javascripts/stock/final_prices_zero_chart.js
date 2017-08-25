@@ -24,7 +24,7 @@ for(var i=0;i<fpz.length-2;i++){
   var centerC = getCenter(price0, price2);
 
   var fluctua = price1-centerC;
-  if(Math.abs(fluctua) < fluctua_sum/4 || parseInt(fluctua)==0){
+  if(Math.abs(fluctua) < fluctua_sum/3 || parseInt(fluctua)==0){
     judge.push(0); //zero
   }else if(fluctua>0){
     judge.push(+1); //+
@@ -67,10 +67,7 @@ enter.append("rect")
   .text(function(d,i){return i});
 exit.remove();
 
-
-
-
-
-
-
-/**/
+/*
+* 投資指標データ解析パターン
+*/
+var pattern = [];
