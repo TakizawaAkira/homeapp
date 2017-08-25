@@ -8,7 +8,7 @@ router.get('/list', function(req, res, next) {
   var device_type = gh.userAgentType(req);
 
   var stock_history = sh.get_stock_history(req.cookies.stock_history);
-  if(stock_history.length>5)stock_history = stock_history.slice(stock_history.length-5);
+  if(stock_history.length>5) stock_history = stock_history.slice(0, 5);
   var stock_history_codes=[], stock_history_datas=[];
   for(key in stock_history) stock_history_codes.push(stock_history[key]['code']);
 
@@ -45,7 +45,21 @@ router.get('/list', function(req, res, next) {
       default_count: device_type=='sp'?30:100
     });
 
-    sql = `SELECT * FROM stock LIMIT ${pagenation.page_option.count} OFFSET ${(pagenation.page_option.page-1)*pagenation.page_option.count};`;
+    sql = `
+    SELECT stock.*, spd.pre, spd.pre_per
+    FROM stock
+    INNER JOIN
+          (SELECT spd.*
+          FROM stock_price_data AS spd
+          INNER JOIN (SELECT brand_id,MAX(datetime) as latest FROM stock_price_data GROUP BY brand_id) AS spd_max
+            ON spd.brand_id = spd_max.brand_id
+            AND spd.datetime = spd_max.latest) as spd
+      ON stock.id = spd.brand_id
+    LIMIT ${pagenation.page_option.count}
+    OFFSET ${(pagenation.page_option.page-1)*pagenation.page_option.count};
+    `;
+    // 前日比の表示のためstock_price_dataに結合修正
+    // sql = `SELECT * FROM stock LIMIT ${pagenation.page_option.count} OFFSET ${(pagenation.page_option.page-1)*pagenation.page_option.count};`;
     connection.query(sql, function(err,rows){
       res.render('stock/index', {
         title: "投資指標データ解析",
@@ -60,36 +74,6 @@ router.get('/list', function(req, res, next) {
     });
   });});
 
-
-
-  // var sql = `SELECT count(*) FROM stock;`;
-  // connection.query(sql, function(err,rows){
-  //   var pagenation = gh.getPagenationNum({
-  //     max: rows[0]['count(*)'],
-  //     count: req.query.limit,
-  //     page: req.query.page,
-  //     girth: 2,
-  //     default_count: device_type=='sp'?30:100
-  //   });
-  //
-  //   sql = `SELECT * FROM stock LIMIT ${pagenation.page_option.count} OFFSET ${(pagenation.page_option.page-1)*pagenation.page_option.count};`;
-  //   var stocks = [];
-  //   var list_length = rows[0]['count(*)'];
-  //
-  //   connection.query(sql, function(err,rows){
-  //     stocks = rows;
-  //
-  //     res.render('stock/index', {
-  //       title: "投資指標データ解析",
-  //       sub_title: "銘柄一覧",
-  //       description: "株価データベースの銘柄",
-  //       stocks: stocks,
-  //       page_option: pagenation.page_option,
-  //       pagenation: pagenation,
-  //       device_type: device_type
-  //     });
-  //   });
-  // });
 });
 
 
@@ -127,7 +111,7 @@ router.get('/show_datas', function(req, res, next) {
     if(!err && stock){
       //詳細閲覧履歴に追加
       stock_history = sh.add_stock_history(req.cookies.stock_history, rows[0].code);
-      res.cookie('stock_history', stock_history, {maxAge:60*60*60*24*3, httpOnly:false});
+      res.cookie('stock_history', stock_history, {maxAge:60*60*60*24*32, httpOnly:false});
 
       sql = `SELECT * FROM stock_price_data WHERE brand_id=${rows[0].id} ORDER BY datetime`;
 

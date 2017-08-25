@@ -17,8 +17,11 @@
             <td><%=stocks[key].code-%></td>
             <td>
               <a href="/stock/show_datas?stock_code=<%=stocks[key].code%>">
-                <%=stocks[key].name-%></td>
+                <%=stocks[key].name-%>
               </a>
+              <span class="badge badge-<%=parseInt(stocks[key].pre)<0?'danger':'success'%>">
+                <%=stocks[key].pre-%>(<%=stocks[key].pre_per-%>)
+              </span>
             </td>
             <td><%=stocks[key].market-%></td>
             <td><%=stocks[key].industry_type-%></td>
