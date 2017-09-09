@@ -14,10 +14,14 @@ global.sh = stock_helper;
 
 var index = require('./routes/index');
 var stock = require('./routes/stock');
+var globalbin = require('./routes/globalbin');
 var users = require('./routes/users');
 
 var app = express();
 app.listen(1362);
+
+// ディレクトリroot
+global.___app_dir = __dirname;
 
 // mysql接続
 const connection = mysql.createConnection({
@@ -53,6 +57,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/stock', stock);
+app.use('/globalbin', globalbin);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
