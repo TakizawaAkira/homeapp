@@ -4,6 +4,7 @@
     <title>投資指標データ-<%-title-%>-<%-sub_title-%></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%- include(`${___app_dir}/views/template/all_template.ejs`) %>
     <%- include ../template/bootstrap.ejs %>
     <%- include ../template/d3js.ejs %>
     <%- include ../template/material_icons.ejs %>
@@ -72,9 +73,26 @@
           <!--解析結果可視化-->
           <div class="view_stock_prices_zero"></div>
           <div class="view_stock_prices_zero_pattern"></div>
-          <script src="/javascripts/stock/final_prices_zero_chart.js"></script>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col">
+          <table>
+            <thead>
+              <tr>
+                <th>検知ID</th>
+                <th>日付</th>
+                <th>5日変動</th>
+              </tr>
+            </thead>
+            <tbody id="match_pattern_table">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <script src="/javascripts/stock/final_prices_zero_chart.js"></script>
 
       <div class="row">
         <div class="col">

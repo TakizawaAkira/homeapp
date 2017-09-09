@@ -6,6 +6,8 @@
           <th>ID</th>
           <th>証券コード</th>
           <th>名称</th>
+          <th>前日比</th>
+          <th>売り買い</th>
           <th>市場</th>
           <th>業種</th>
         </tr>
@@ -19,9 +21,12 @@
               <a href="/stock/show_datas?stock_code=<%=stocks[key].code%>">
                 <%=stocks[key].name-%>
               </a>
-              <span class="badge badge-<%=parseInt(stocks[key].pre)<0?'danger':'success'%>">
+            </td>
+            <td style="color: <%=parseInt(stocks[key].pre)<0?'red':'green'%>">
                 <%=stocks[key].pre-%>(<%=stocks[key].pre_per-%>)
-              </span>
+            </td>
+            <td>
+
             </td>
             <td><%=stocks[key].market-%></td>
             <td><%=stocks[key].industry_type-%></td>
