@@ -1,15 +1,77 @@
 <html>
   <head>
     <title>index</title>
-    <link rel="stylesheet" href="/stylesheets/style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%- include(`${___app_dir}/views/template/all_template.ejs`) %>
+    <%- include template/bootstrap.ejs %>
   </head>
   <body>
-    <h2>トップページ</h2>
-    <a href="/stock/list">
-      <div style="background-color: #AAF;width: 30%;height: 30%;color: white;">
-        投資指標データ解析
+
+    <div class="container-fluid">
+      <div class="row" style="padding-top:10px; background-color:#a9a9a9; color: white;">
+        <div class="col" style="color:inherit;">
+          <h4>トップページ</h4>
+        </div>
       </div>
-    </a>
-    <a href="/about">-about</a>
+
+      <div class="row" style="margin-top:50px;">
+
+        <div class="col-md-6 col-xs-12">
+          <div class="card text-center" style="border-width: 5px;border-color:#0F52BC; margin-bottom: 10px;">
+            <div class="card-header" style="background-color:#0F52BC;color:white;">
+              <b>~ アプリ ~</b>
+            </div>
+            <div class="card-block">
+              <a href="/stock/list">
+                <h4 class="card-title">株価データ解析</h4>
+              </a>
+              <p class="card-text">投資指標データの蓄積及び解析結果の可視化</p>
+            </div>
+            <div class="card-footer" style="background-color:#0F52BC;color:white;">
+              最終リリース: 2 days ago
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xs-12">
+          <div class="card text-center" style="border-width: 5px;border-color:#696969; margin-bottom: 10px;">
+            <div class="card-header" style="background-color:#696969;color:white;">
+              <b>~ API ~</b>
+            </div>
+            <div class="card-block">
+              <a href="javascript: alert('メンテナンス中');">
+                <h4 class="card-title">GlobalBin</h4>
+              </a>
+              <p class="card-text">端末を超えたコマンド共有及びシェル生成</p>
+            </div>
+            <div class="card-footer" style="background-color:#696969;color:white;">
+              最終リリース: 1 days ago
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:50px;">
+      <div class="col">
+
+        <a href="/about">
+          <div class="card text-center">
+            <div class="card-header">
+              about
+            </div>
+            <div class="card-block">
+              <h4 class="card-title">このホームページに関して</h4>
+            </div>
+            <div class="card-footer text-muted">
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
   </body>
 </html>

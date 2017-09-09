@@ -3,9 +3,10 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  var device_type = gh.userAgentType(req);
   var sql = `SELECT * FROM stock LIMIT 10;`;
   connection.query(sql, function(err,rows){
-    res.render('index', {title: 'root', stocks:rows});
+    res.render('index', {title: 'root', stocks:rows, 'device_type': device_type});
   });
 });
 
