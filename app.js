@@ -15,6 +15,7 @@ global.sh = stock_helper;
 var index = require('./routes/index');
 var stock = require('./routes/stock');
 var globalbin = require('./routes/globalbin');
+var scriptnote = require('./routes/scriptnote');
 var users = require('./routes/users');
 
 var app = express();
@@ -58,6 +59,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/stock', stock);
 app.use('/globalbin', globalbin);
+app.use('/scriptnote', scriptnote);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
